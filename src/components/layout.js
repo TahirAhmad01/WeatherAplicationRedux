@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TodayWeather from "./TodayWeather/todayWeather";
 import { weatherApi } from "../features/weather/weather/weatherApi";
-import SearchCountries from "./searchCountries";
+import Navbar from "./navbar";
+import TodayWeather from "./TodayWeather";
 import WeatherLoader from "./weatherLoader";
 import WeekWeather from "./weekWeather/weekWeather";
 
@@ -15,7 +15,7 @@ export function Layout() {
   const dispatch = useDispatch();
 
   const cityUpdate = useSelector((state) => state.countries);
-  const { lat, lon, city } = cityUpdate || {};
+  const { lat, lon, city, country } = cityUpdate || {};
 
   useEffect(() => {
     async function getData() {
@@ -40,19 +40,26 @@ export function Layout() {
 
   return (
     <>
-      <div className="bg-emerald-50 h-screen flex justify-center overflow-auto">
-        <div className="customContainer py-2">
-          {/* search country */}
-          <SearchCountries />
-          {isError && <div>{error.message}</div>}
-          {isLoading ? (
-            <WeatherLoader />
-          ) : (
-            <React.Fragment>
-              <TodayWeather data={weatherData} city={city} />
-              <WeekWeather data={weatherData} />
-            </React.Fragment>
-          )}
+      <div className="bg-emerald-50 h-screen  overflow-auto">
+        <Navbar />
+        <div className="flex justify-center">
+          <div className="customContainer py-2">
+            {/* search country */}
+            {/* <SearchCountries /> */}
+            {isError && <div>{error.message}</div>}
+            {isLoading ? (
+              <WeatherLoader />
+            ) : (
+              <React.Fragment>
+                <TodayWeather
+                  data={weatherData}
+                  city={city}
+                  country={country}
+                />
+                <WeekWeather data={weatherData} />
+              </React.Fragment>
+            )}
+          </div>
         </div>
       </div>
     </>

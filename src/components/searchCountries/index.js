@@ -72,7 +72,7 @@ function SearchCountries() {
   }
 
   return (
-    <div className=" relative">
+    <div className="flex-grow-1 max-w-[450px] relative">
       <OutsideClickHandler
         onOutsideClick={() => {
           visible && setVisible(false);
@@ -82,7 +82,7 @@ function SearchCountries() {
         <input
           type="text"
           placeholder="search here..."
-          className="w-full  px-3 py-2 rounded-md"
+          className="w-full  px-3 py-2 rounded-[29px]"
           onChange={(e) => {
             setVal(e.target.value);
             setVisible(true);
@@ -91,7 +91,7 @@ function SearchCountries() {
       </OutsideClickHandler>
 
       <div
-        className={`absolute w-full rounded-md min-h-2 max-h-[150px] overflow-y-auto bg-white mt-1 py-2 px-2  scrollbar-thumb-gray-100 scrollbar-track-gray-20 scrollbar-thin transition duration-300 ease-in-out 
+        className={`absolute z-50 w-full rounded-md min-h-2 max-h-[150px] overflow-y-auto bg-white mt-1 py-2 px-2  scrollbar-thumb-gray-100 scrollbar-track-gray-20 scrollbar-thin transition duration-300 ease-in-out 
       ${visible ? "visible" : "invisible"}
       `}
       >

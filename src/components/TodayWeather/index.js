@@ -3,7 +3,7 @@ import CurrentWeather from "./currentWeather";
 import FullDayWeather from "./fullDayWeather";
 import WeatherDetails from "./weatherDetails";
 
-function TodayWeather({ data }) {
+function TodayWeather({ data, city, country }) {
   const { days, currentConditions } = data || {};
   const {
     temp: currentTemp,
@@ -19,6 +19,9 @@ function TodayWeather({ data }) {
   return (
     //bg-sky-300
     <div className=" pt-3 pb-4 px-5 my-3 rounded-xl">
+      <div className="font-medium text-1xl">
+        {city} , {country}{" "}
+      </div>
       {/* temp */}
       <div className="w-full">
         {/* current Weather */}
