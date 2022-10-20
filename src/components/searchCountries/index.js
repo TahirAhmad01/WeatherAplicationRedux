@@ -16,21 +16,23 @@ function SearchCountries() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getData() {
-      setIsLoading(true);
-      await dispatch(countryApi.endpoints.getCountry.initiate(value))
-        .then((data) => {
-          setCityList(data?.data?.data);
-          //console.log(data?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsError(err.message);
-        });
+    if (value !== "") {
+      async function getData() {
+        setIsLoading(true);
+        await dispatch(countryApi.endpoints.getCountry.initiate(value))
+          .then((data) => {
+            setCityList(data?.data?.data);
+            //console.log(data?.data?.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsError(err.message);
+          });
 
-      setIsLoading(false);
+        setIsLoading(false);
+      }
+      getData();
     }
-    getData();
   }, [dispatch, value]);
 
   const reqWeather = (lat, lon, city, country) => {

@@ -15,6 +15,7 @@ function TodayWeather({ data, city, country }) {
     uvindex,
     visibility,
   } = currentConditions || {};
+  // console.log(data);
 
   return (
     //bg-sky-300

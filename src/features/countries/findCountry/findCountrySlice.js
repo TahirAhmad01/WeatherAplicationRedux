@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  lat: 24.414166666,
-  lon: 88.985833333,
-  city: "Natore",
-  country: "Bangladesh",
+  lat: "",
+  lon: "",
+  city: "",
+  country: "",
 };
 
 export const findCountrySlice = createSlice({
