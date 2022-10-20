@@ -108,28 +108,6 @@ export function Layout() {
     }
   }, [coords, dispatch, lat, lon]);
 
-  // useEffect(() => {
-  //   if (lon !== (undefined || "") && lat !== (undefined || "")) {
-  //     async function getData() {
-  //       setIsLoading(true);
-  //       await dispatch(weatherApi.endpoints.getWeather.initiate({ lat, lon }))
-  //         .then((data) => {
-  //           if (data.data !== undefined) {
-  //             setWeatherData(data.data);
-  //           } else {
-  //             setWeatherData([]);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           setIsError(true);
-  //           setError(err);
-  //         });
-  //       setIsLoading(false);
-  //     }
-  //     getData();
-  //   }
-  // }, [dispatch, lat, lon]);
-
   let content;
 
   if (isLoading) {
