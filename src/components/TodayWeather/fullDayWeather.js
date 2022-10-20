@@ -5,30 +5,16 @@ import {
   HorizontalScrollItem,
 } from "react-simple-horizontal-scroller";
 
-function FullDayWeather({ data }) {
+function FullDayWeather({ data, tConvert }) {
   const [margeTwoDays, setMargeTwoDays] = useState([]);
 
-  // console.log(data);
+  // console.log(currentDate);
   const { days, currentConditions } = data || {};
   const { datetime: currentTime } = currentConditions || {};
 
   useEffect(() => {
     days?.length > 0 && setMargeTwoDays(days[0]?.hours.concat(days[0]?.hours));
   }, [days]);
-
-  function tConvert(time) {
-    // Check correct time format and split into components
-    time = time
-      .toString()
-      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-    if (time.length > 1) {
-      time = time.slice(1);
-      time[5] = +time[0] < 12 ? " AM" : " PM";
-      time[0] = +time[0] % 12 || 12;
-    }
-    return time.join("");
-  }
 
   let content;
 

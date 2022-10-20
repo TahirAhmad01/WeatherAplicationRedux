@@ -14,8 +14,23 @@ function TodayWeather({ data, city, country }) {
     pressure,
     uvindex,
     visibility,
+    datetime: currentTime,
   } = currentConditions || {};
-  // console.log(data);
+  console.log(data);
+
+  function tConvert(time) {
+    // Check correct time format and split into components
+    time = time
+      .toString()
+      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) {
+      time = time.slice(1);
+      time[5] = +time[0] < 12 ? " AM" : " PM";
+      time[0] = +time[0] % 12 || 12;
+    }
+    return time.join("");
+  }
 
   return (
     //bg-sky-300
@@ -31,6 +46,9 @@ function TodayWeather({ data, city, country }) {
           currentTemp={currentTemp}
           conditions={conditions}
           days={days}
+          currentTime={currentTime}
+          tConvert={tConvert}
+          currentDate={data?.days[0]?.datetime}
         />
 
         {/* weather details */}
@@ -42,7 +60,7 @@ function TodayWeather({ data, city, country }) {
           pressure={pressure}
         />
 
-        <FullDayWeather data={data} />
+        <FullDayWeather data={data} tConvert={tConvert} />
       </div>
     </div>
   );

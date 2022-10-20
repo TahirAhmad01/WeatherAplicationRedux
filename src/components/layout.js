@@ -113,7 +113,7 @@ export function Layout() {
   if (isLoading) {
     content = <WeatherLoader />;
   } else if (!isLoading && isError) {
-    content = <div>{error.message}</div>;
+    content = <div classN>{error.message}</div>;
   } else if (
     !isLoading &&
     !isError &&

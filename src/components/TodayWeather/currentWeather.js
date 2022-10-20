@@ -2,7 +2,16 @@ import fahrenheitToCelsius from "fahrenheit-to-celsius";
 import moment from "moment/moment";
 import React from "react";
 
-function CurrentWeather({ icon, currentTemp, conditions, days }) {
+function CurrentWeather({
+  icon,
+  currentTemp,
+  conditions,
+  days,
+  currentTime,
+  tConvert,
+  currentDate,
+}) {
+  console.log(currentDate);
   let tempMaxMin;
 
   if (days?.length > 0) {
@@ -39,7 +48,8 @@ function CurrentWeather({ icon, currentTemp, conditions, days }) {
         {/* time */}
         <div className="flex justify-center font-medium">
           <div>
-            {moment(new Date()).format("ll")} {moment(new Date()).format("LT")}
+            {moment(currentDate).format("ll")}{" "}
+            {currentTime && tConvert(currentTime.slice(0, 5))}
           </div>
           {tempMaxMin}
         </div>
