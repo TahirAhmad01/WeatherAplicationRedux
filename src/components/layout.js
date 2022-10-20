@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanLon } from "../features/countries/findCountry/findCountrySlice";
+import { getCityNameApi } from "../features/getCity/getCityName/getCityName";
 import { weatherApi } from "../features/weather/weather/weatherApi";
-import { getCityNameApi } from "./../features/countries/getCityName/getCityNameApi";
 import Navbar from "./navbar";
 import TodayWeather from "./TodayWeather";
 import WeatherLoader from "./weatherLoader";
@@ -14,15 +14,15 @@ export function Layout() {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [weatherData, setWeatherData] = useState("");
-  const [currentLatLan, setCurrentLatLon] = useState("");
+  const [cityData, setCityData] = useState("");
 
   const dispatch = useDispatch();
 
   const cityUpdate = useSelector((state) => state.countries);
-  const { lat, lon, city, country } = cityUpdate || {};
-  console.log("latLon", { lat, lon, city, country });
-  console.log(weatherData);
-
+  const { lat, lon } = cityUpdate || {};
+  // console.log("latLon", { lat, lon, city, country });
+  // console.log(weatherData);
+  
   // isGeolocationAvailable, isGeolocationEnabled
   const { coords, isGeolocationEnabled, isGeolocationAvailable } =
     useGeolocated({
@@ -33,61 +33,41 @@ export function Layout() {
     });
 
   useEffect(() => {
-    if (!isGeolocationEnabled || !isGeolocationAvailable) {
+    if (
+      isGeolocationEnabled &&
+      isGeolocationAvailable &&
+      coords?.longitude &&
+      coords.latitude &&
+      lat === (undefined || "") &&
+      lon === (undefined || "")
+    ) {
+      dispatch(
+        setLanLon({
+          lat: coords?.latitude,
+          lon: coords?.longitude,
+        })
+      );
+    } else if (!isGeolocationEnabled || !isGeolocationAvailable) {
       dispatch(
         setLanLon({
           lat: 24.3667,
           lon: 89.25,
-          city: "Gurudaspur Upazila",
-          country: "Bangladesh",
         })
       );
     }
-  }, [isGeolocationEnabled, dispatch, isGeolocationAvailable]);
+  }, [
+    isGeolocationEnabled,
+    dispatch,
+    isGeolocationAvailable,
+    coords,
+    lat,
+    lon,
+  ]);
 
   // console.log(coords);
   useEffect(() => {
-    if (
-      lon === (undefined || "") &&
-      lat === (undefined || "") &&
-      coords?.longitude &&
-      coords.latitude
-    ) {
-      console.log("hello");
-      async function getDataA() {
-        setIsLoading(true);
-        await dispatch(
-          getCityNameApi.endpoints.getCityName.initiate({
-            lat: coords?.latitude,
-            lon: coords?.longitude,
-          })
-        )
-          .then((data) => {
-            console.log(data);
-            if (data?.data?.data !== "") {
-              // setCurrentLatLon(data?.data?.data[0]);
-              const { latitude, longitude, city, country } =
-                data?.data?.data[0] || {};
-
-              dispatch(
-                setLanLon({
-                  lat: latitude,
-                  lon: longitude,
-                  city: city,
-                  country: country,
-                })
-              );
-            }
-          })
-          .catch((err) => {
-            setIsError(err.message);
-          });
-        setIsLoading(true);
-      }
-
-      getDataA();
-    } else if (lon !== (undefined || "") && lat !== (undefined || "")) {
-      console.log("hello");
+    if (lon !== (undefined || "") && lat !== (undefined || "")) {
+      // console.log("hello");
       async function getData() {
         setIsLoading(true);
         await dispatch(weatherApi.endpoints.getWeather.initiate({ lat, lon }))
@@ -102,11 +82,19 @@ export function Layout() {
             setIsError(true);
             setError(err);
           });
+
+        await dispatch(getCityNameApi.endpoints.getCity.initiate({ lat, lon }))
+          .then((data) => {
+            setCityData(data.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         setIsLoading(false);
       }
       getData();
     }
-  }, [coords, dispatch, lat, lon]);
+  }, [dispatch, lat, lon]);
 
   let content;
 
@@ -127,7 +115,7 @@ export function Layout() {
   ) {
     content = (
       <React.Fragment>
-        <TodayWeather data={weatherData} city={city} country={country} />
+        <TodayWeather data={weatherData} cityData={cityData} />
         <WeekWeather data={weatherData} />
       </React.Fragment>
     );

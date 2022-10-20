@@ -11,7 +11,7 @@ function CurrentWeather({
   tConvert,
   currentDate,
 }) {
-  console.log(currentDate);
+  // console.log(currentDate);
   let tempMaxMin;
 
   if (days?.length > 0) {

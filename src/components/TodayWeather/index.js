@@ -3,7 +3,10 @@ import CurrentWeather from "./currentWeather";
 import FullDayWeather from "./fullDayWeather";
 import WeatherDetails from "./weatherDetails";
 
-function TodayWeather({ data, city, country }) {
+function TodayWeather({ data, cityData }) {
+  console.log(cityData);
+  const { address } = cityData || {};
+  const { county, state, country } = address || {};
   const { days, currentConditions } = data || {};
   const {
     temp: currentTemp,
@@ -16,7 +19,7 @@ function TodayWeather({ data, city, country }) {
     visibility,
     datetime: currentTime,
   } = currentConditions || {};
-  console.log(data);
+  // console.log(data);
 
   function tConvert(time) {
     // Check correct time format and split into components
@@ -36,7 +39,14 @@ function TodayWeather({ data, city, country }) {
     //bg-sky-300
     <div className=" pt-3 pb-4 px-5 my-3 rounded-xl">
       <div className="font-medium text-1xl">
-        {city} , {country}{" "}
+        {cityData !== ("" || undefined) ? (
+          <div>
+            {county && county + " , "}
+            {state} , {country}{" "}
+          </div>
+        ) : (
+          <div>Unknown place</div>
+        )}
       </div>
       {/* temp */}
       <div className="w-full">

@@ -3,8 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   lat: "",
   lon: "",
-  city: "",
-  country: "",
 };
 
 export const findCountrySlice = createSlice({
@@ -12,11 +10,9 @@ export const findCountrySlice = createSlice({
   initialState,
   reducers: {
     setLanLon: (state, action) => {
-      const { lat, lon, city, country } = action.payload || {};
+      const { lat, lon } = action.payload || {};
       state.lat = lat;
       state.lon = lon;
-      state.city = city;
-      state.country = country;
     },
   },
 });
