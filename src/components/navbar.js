@@ -9,7 +9,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center text-white">
             <img src={logo} alt="logo" className="w-12" />
-            {/* <div className="font-medium text-2xl md:invisible">Weather</div> */}
+            <div className="font-medium text-2xl md:block hidden">
+              Weather
+            </div>
           </div>
 
           <SearchCountries />

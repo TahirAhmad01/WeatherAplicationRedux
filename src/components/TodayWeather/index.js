@@ -42,7 +42,7 @@ function TodayWeather({ data, cityData }) {
         {cityData !== ("" || undefined) ? (
           <div>
             {county && county + " , "}
-            {state} , {country}{" "}
+            {state && state + " , "} {country}{" "}
           </div>
         ) : (
           <div>Unknown place</div>

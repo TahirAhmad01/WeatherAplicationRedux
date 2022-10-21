@@ -83,8 +83,8 @@ function SearchCountries() {
       >
         <input
           type="text"
-          placeholder="search here..."
-          className="w-full  px-3 py-2 rounded-[29px]"
+          placeholder="Search City Here"
+          className="w-full  px-3 py-2 rounded-[29px] outline-0"
           onChange={(e) => {
             setVal(e.target.value);
             setVisible(true);
