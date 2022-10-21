@@ -17,7 +17,7 @@ function CurrentWeather({
   if (days?.length > 0) {
     const { tempmax, tempmin } = days[0] || {};
     tempMaxMin = (
-      <div className="ml-3">
+      <div className="md:ml-3 sm:ml-0">
         {tempmax && Math.round(fahrenheitToCelsius(tempmax))}&#176;C /{" "}
         {tempmin && Math.round(fahrenheitToCelsius(tempmin))}
         &#176;C
@@ -26,8 +26,8 @@ function CurrentWeather({
   }
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="flex justify-center w-36">
+    <div className="flex md:justify-center justify-start item-center flex-row">
+      <div className="flex items-center md:w-36 w-24 h-auto">
         <img
           src={icon && require(`../../assets/images/png/icons/${icon}.png`)}
           alt={icon}
@@ -36,7 +36,7 @@ function CurrentWeather({
       </div>
       <div className=" ml-4">
         <div className=" flex items-center">
-          <div className="text-8xl font-medium">
+          <div className="text-6xl md:text-8xl font-medium">
             {currentTemp && Math.round(fahrenheitToCelsius(currentTemp))}
           </div>
           <div className=" font-medium ml-2">
@@ -46,7 +46,7 @@ function CurrentWeather({
         </div>
 
         {/* time */}
-        <div className="flex justify-center font-medium">
+        <div className="flex justify-center font-medium md:flex-row flex-col-reverse">
           <div>
             {moment(currentDate).format("ll")}{" "}
             {currentTime && tConvert(currentTime.slice(0, 5))}

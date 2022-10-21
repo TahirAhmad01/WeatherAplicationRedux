@@ -9,7 +9,7 @@ function WeatherDetails({
   pressure,
 }) {
   return (
-    <div className="weather-details flex justify-center text-gray-600">
+    <div className="flex justify-center text-gray-600 flex-wrap">
       <div className="mx-4 my-3 text-center font-medium">
         <div>Feels Like</div>
         <div>

@@ -37,7 +37,7 @@ function TodayWeather({ data, cityData }) {
 
   return (
     //bg-sky-300
-    <div className=" pt-3 pb-4 px-5 my-3 rounded-xl">
+    <div className=" pt-3 pb-4 md:px-5 sm:px-0 my-3 rounded-xl">
       <div className="font-medium text-1xl">
         {cityData !== ("" || undefined) ? (
           <div>
@@ -62,15 +62,17 @@ function TodayWeather({ data, cityData }) {
         />
 
         {/* weather details */}
-        <WeatherDetails
-          feelslike={feelslike}
-          humidity={humidity}
-          uvindex={uvindex}
-          visibility={visibility}
-          pressure={pressure}
-        />
+        <div className="flex flex-col-reverse md:flex-col">
+          <WeatherDetails
+            feelslike={feelslike}
+            humidity={humidity}
+            uvindex={uvindex}
+            visibility={visibility}
+            pressure={pressure}
+          />
 
-        <FullDayWeather data={data} tConvert={tConvert} />
+          <FullDayWeather data={data} tConvert={tConvert} />
+        </div>
       </div>
     </div>
   );
