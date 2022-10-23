@@ -3,6 +3,7 @@ import getCityNameReducer from "../features/getCity/getCityName/getCityNameSlice
 import { findCountriesApi } from "./../features/countries/api/apiSlice";
 import findCountryReducer from "./../features/countries/findCountry/findCountrySlice";
 import { getCityApi } from "./../features/getCity/api/apiSlice";
+import findCityReducer from "./../features/getCity/findCity/findCitySlice";
 import { weatherApiBase } from "./../features/weather/api/apiSlice";
 import weatherReducer from "./../features/weather/weather/weatherSlice";
 
@@ -11,6 +12,7 @@ export const store = configureStore({
     [findCountriesApi.reducerPath]: findCountriesApi.reducer,
     [weatherApiBase.reducerPath]: weatherApiBase.reducer,
     [getCityApi.reducerPath]: getCityApi.reducer,
+    findCity: findCityReducer,
     countries: findCountryReducer,
     getCityName: getCityNameReducer,
     weather: weatherReducer,
@@ -20,5 +22,5 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(findCountriesApi.middleware)
       .concat(weatherApiBase.middleware)
-      .concat(getCityApi.middleware)
+      .concat(getCityApi.middleware),
 });

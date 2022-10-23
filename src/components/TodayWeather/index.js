@@ -6,7 +6,7 @@ import WeatherDetails from "./weatherDetails";
 function TodayWeather({ data, cityData }) {
   console.log(cityData);
   const { address } = cityData || {};
-  const { county, state, country } = address || {};
+  const { county, state_district, country, town } = address || {};
   const { days, currentConditions } = data || {};
   const {
     temp: currentTemp,
@@ -41,8 +41,9 @@ function TodayWeather({ data, cityData }) {
       <div className="font-medium text-1xl">
         {cityData !== ("" || undefined) ? (
           <div>
+            {town && town + " , "}
             {county && county + " , "}
-            {state && state + " , "} {country}{" "}
+            {state_district && state_district + " , "} {country}{" "}
           </div>
         ) : (
           <div>Unknown place</div>

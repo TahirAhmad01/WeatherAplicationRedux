@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch } from "react-redux";
 import { useDebounce } from "use-debounce";
-import { countryApi } from "../../features/countries/findCountry/findCountryApi";
 import { setLanLon } from "../../features/countries/findCountry/findCountrySlice";
+import { findCityApi } from "./../../features/getCity/findCity/findCityApi";
 
 function SearchCountries() {
   const [val, setVal] = useState("");
@@ -19,9 +19,10 @@ function SearchCountries() {
     if (value !== "") {
       async function getData() {
         setIsLoading(true);
-        await dispatch(countryApi.endpoints.getCountry.initiate(value))
+        await dispatch(findCityApi.endpoints.getCountry.initiate(value))
           .then((data) => {
-            setCityList(data?.data?.data);
+            console.log(data?.data);
+            setCityList(data?.data);
             //console.log(data?.data?.data);
           })
           .catch((err) => {
@@ -35,8 +36,8 @@ function SearchCountries() {
     }
   }, [dispatch, value]);
 
-  const reqWeather = (lat, lon, city, country) => {
-    dispatch(setLanLon({ lat, lon, city, country }));
+  const reqWeather = (lat, lon) => {
+    dispatch(setLanLon({ lat, lon }));
     setVisible(false);
   };
 
@@ -57,14 +58,14 @@ function SearchCountries() {
     cityList !== undefined
   ) {
     content = <div className="text-center">no data found</div>;
-  } else if (!isLoading && isError?.message !== "" && cityList?.length !== 0) {
+  } else if (!isLoading && isError?.message !== "" && cityList?.length > 0) {
     content = cityList?.map((cityItem, idx) => {
-      const { city, latitude, longitude, country } = cityItem || {};
+      const { display_place: city, lat, lon } = cityItem || {};
 
       return (
         <div
           key={idx}
-          onClick={() => reqWeather(latitude, longitude, city, country)}
+          onClick={() => reqWeather(lat, lon)}
           className="cursor-pointer hover:bg-slate-50 hover:rounded-md py-2 px-3 "
         >
           {city}
