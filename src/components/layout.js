@@ -22,38 +22,40 @@ export function Layout() {
   const { lat, lon } = cityUpdate || {};
   // console.log("latLon", { lat, lon, city, country });
   // console.log(weatherData);
-  
+
   // isGeolocationAvailable, isGeolocationEnabled
   const { coords, isGeolocationEnabled, isGeolocationAvailable } =
     useGeolocated({
       positionOptions: {
         enableHighAccuracy: false,
       },
-      userDecisionTimeout: 5000,
+      userDecisionTimeout: 10000000,
     });
 
   useEffect(() => {
-    if (
-      isGeolocationEnabled &&
-      isGeolocationAvailable &&
-      coords?.longitude &&
-      coords.latitude &&
-      lat === (undefined || "") &&
-      lon === (undefined || "")
-    ) {
-      dispatch(
-        setLanLon({
-          lat: coords?.latitude,
-          lon: coords?.longitude,
-        })
-      );
-    } else if (!isGeolocationEnabled || !isGeolocationAvailable) {
-      dispatch(
-        setLanLon({
-          lat: 24.3667,
-          lon: 89.25,
-        })
-      );
+    if (coords !== undefined) {
+      if (
+        isGeolocationEnabled &&
+        isGeolocationAvailable &&
+        coords?.longitude &&
+        coords.latitude &&
+        lat === (undefined || "") &&
+        lon === (undefined || "")
+      ) {
+        dispatch(
+          setLanLon({
+            lat: coords?.latitude,
+            lon: coords?.longitude,
+          })
+        );
+      } else if (!isGeolocationEnabled || !isGeolocationAvailable) {
+        dispatch(
+          setLanLon({
+            lat: 24.3667,
+            lon: 89.25,
+          })
+        );
+      }
     }
   }, [
     isGeolocationEnabled,
@@ -98,7 +100,7 @@ export function Layout() {
 
   let content;
 
-  if (isLoading) {
+  if (isLoading || coords === undefined) {
     content = <WeatherLoader />;
   } else if (!isLoading && isError) {
     content = <div classN>{error.message}</div>;
