@@ -4,7 +4,6 @@ import FullDayWeather from "./fullDayWeather";
 import WeatherDetails from "./weatherDetails";
 
 function TodayWeather({ data, cityData }) {
-  console.log(cityData);
   const { address } = cityData || {};
   const { county, state_district, country, town } = address || {};
   const { days, currentConditions } = data || {};

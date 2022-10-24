@@ -9,7 +9,7 @@ function SearchCountries() {
   const [val, setVal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cityList, setCityList] = useState([]);
-  const [isError, setIsError] = useState("");
+  const [isError, setIsError] = useState(false);
   const [visible, setVisible] = useState(false);
   const [value] = useDebounce(val, 1000);
 
@@ -27,7 +27,7 @@ function SearchCountries() {
           })
           .catch((err) => {
             console.log(err);
-            setIsError(err.message);
+            setIsError(true);
           });
 
         setIsLoading(false);
@@ -45,7 +45,7 @@ function SearchCountries() {
 
   if (isLoading) {
     content = <div className="text-center">Loading....</div>;
-  } else if (!isLoading && cityList === undefined) {
+  } else if (!isLoading && isError) {
     content = (
       <div className="text-center text-red-500">
         <div>Something went wrong</div>
@@ -53,12 +53,11 @@ function SearchCountries() {
     );
   } else if (
     !isLoading &&
-    isError === "" &&
-    cityList?.length === 0 &&
-    cityList !== undefined
+    !isError &&
+    (cityList?.length === 0 || cityList === undefined)
   ) {
     content = <div className="text-center">no data found</div>;
-  } else if (!isLoading && isError?.message !== "" && cityList?.length > 0) {
+  } else if (!isLoading && !isError && cityList?.length > 0) {
     content = cityList?.map((cityItem, idx) => {
       const { display_place: city, lat, lon } = cityItem || {};
 
@@ -79,7 +78,6 @@ function SearchCountries() {
       <OutsideClickHandler
         onOutsideClick={() => {
           visible && setVisible(false);
-          console.log("clicked");
         }}
       >
         <input

@@ -20,7 +20,7 @@ export function Layout() {
 
   const cityUpdate = useSelector((state) => state.countries);
   const { lat, lon } = cityUpdate || {};
- 
+
   const { coords, isGeolocationEnabled, isGeolocationAvailable } =
     useGeolocated({
       positionOptions: {
@@ -30,9 +30,8 @@ export function Layout() {
     });
 
   useEffect(() => {
-    if (coords !== undefined) {
+    if (isGeolocationAvailable && coords !== undefined) {
       if (
-        isGeolocationEnabled &&
         isGeolocationAvailable &&
         coords?.longitude &&
         coords.latitude &&
@@ -45,14 +44,14 @@ export function Layout() {
             lon: coords?.longitude,
           })
         );
-      } else if (!isGeolocationEnabled || !isGeolocationAvailable) {
-        dispatch(
-          setLanLon({
-            lat: 24.3667,
-            lon: 89.25,
-          })
-        );
       }
+    } else if (!isGeolocationEnabled || !isGeolocationAvailable) {
+      dispatch(
+        setLanLon({
+          lat: 24.3667,
+          lon: 89.25,
+        })
+      );
     }
   }, [
     isGeolocationEnabled,
@@ -63,7 +62,7 @@ export function Layout() {
     lon,
   ]);
 
-  // console.log(coords);
+  //console.log(isGeolocationEnabled);
   useEffect(() => {
     if (lon !== (undefined || "") && lat !== (undefined || "")) {
       // console.log("hello");
@@ -73,7 +72,6 @@ export function Layout() {
           .then((data) => {
             if (data.data !== undefined) {
               setWeatherData(data.data);
-              console.log(data?.data);
             } else {
               setWeatherData([]);
             }
@@ -98,21 +96,24 @@ export function Layout() {
 
   let content;
 
-  if (isLoading || coords === (undefined || "")) {
+  if (isLoading) {
     content = <WeatherLoader />;
   } else if (!isLoading && isError) {
     content = <div classN>{error.message}</div>;
   } else if (
     !isLoading &&
     !isError &&
-    coords !== (undefined || "") &&
     (weatherData === (undefined || "") || weatherData?.length === 0)
   ) {
-    content = <div>no data found ! Please select your location......</div>;
+    content = (
+      <div className="center">
+        <div>No weather data found !</div>
+        <div>Please select your location......</div>
+      </div>
+    );
   } else if (
     !isLoading &&
     !isError &&
-    coords !== (undefined || "") &&
     (weatherData !== (undefined || "") || weatherData?.length > 0)
   ) {
     content = (
