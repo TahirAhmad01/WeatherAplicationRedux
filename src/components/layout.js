@@ -10,7 +10,7 @@ import WeatherLoader from "./weatherLoader";
 import WeekWeather from "./weekWeather/weekWeather";
 
 export function Layout() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [weatherData, setWeatherData] = useState("");
@@ -20,10 +20,7 @@ export function Layout() {
 
   const cityUpdate = useSelector((state) => state.countries);
   const { lat, lon } = cityUpdate || {};
-  // console.log("latLon", { lat, lon, city, country });
-  // console.log(weatherData);
-
-  // isGeolocationAvailable, isGeolocationEnabled
+ 
   const { coords, isGeolocationEnabled, isGeolocationAvailable } =
     useGeolocated({
       positionOptions: {
@@ -76,6 +73,7 @@ export function Layout() {
           .then((data) => {
             if (data.data !== undefined) {
               setWeatherData(data.data);
+              console.log(data?.data);
             } else {
               setWeatherData([]);
             }
@@ -100,19 +98,21 @@ export function Layout() {
 
   let content;
 
-  if (isLoading || coords === undefined) {
+  if (isLoading || coords === (undefined || "")) {
     content = <WeatherLoader />;
   } else if (!isLoading && isError) {
     content = <div classN>{error.message}</div>;
   } else if (
     !isLoading &&
     !isError &&
+    coords !== (undefined || "") &&
     (weatherData === (undefined || "") || weatherData?.length === 0)
   ) {
     content = <div>no data found ! Please select your location......</div>;
   } else if (
     !isLoading &&
     !isError &&
+    coords !== (undefined || "") &&
     (weatherData !== (undefined || "") || weatherData?.length > 0)
   ) {
     content = (
@@ -124,6 +124,7 @@ export function Layout() {
   } else {
     content = "something went wrong";
   }
+
   return (
     <>
       <div className="bg-emerald-50 h-screen  overflow-auto">
